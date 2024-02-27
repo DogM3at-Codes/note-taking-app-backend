@@ -1,12 +1,25 @@
 import { Router, Request, Response } from "express"
+import { body, validationResult } from 'express-validator'
 import { Note } from "../models/note"
 import Notebook from "../repository/notebook"
 
 const router = Router()
 const notebook = new Notebook();
 
+// validation 
+const noteValidationRules = [
+    body('title').notEmpty().withMessage('Title is required'),
+    body('content').notEmpty().withMessage('Content is required'),
+]
+
 // create
-router.post('/', (req: Request, res: Response) => {
+router.post('/', noteValidationRules, (req: Request, res: Response) => {
+    const validationErrors = validationResult(req)
+
+    if (!validationErrors.isEmpty()) {
+        return res.status(400).json({ errors: validationErrors.array() })
+    }
+
     const noteId = notebook.getNoteId()
     const note: Note = {
         id: noteId,
@@ -36,7 +49,13 @@ router.get('/:id', (req: Request, res: Response) => {
 })
 
 // update
-router.put('/:id', (req: Request, res: Response) => {
+router.put('/:id', noteValidationRules, (req: Request, res: Response) => {
+    const validationErrors = validationResult(req)
+
+    if (!validationErrors.isEmpty()) {
+        return res.status(400).json({ errors: validationErrors.array() })
+    }
+
     const updateTask = notebook.updateNote(parseInt(req.params.id), req.body)
 
     if (!updateTask) {
