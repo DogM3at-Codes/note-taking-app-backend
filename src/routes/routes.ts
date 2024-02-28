@@ -79,7 +79,7 @@ router.delete('/:id', (req: Request, res: Response) => {
         res.status(404).send('Note not found')
     } 
     else {
-        res.status(204).send('Note deleted successfully')
+        res.status(204).send()
     }
 })
 
