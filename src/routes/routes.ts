@@ -41,7 +41,7 @@ router.get('/:id', (req: Request, res: Response) => {
     const note = notebook.getNote(parseInt(req.params.id))
 
     if (!note) {
-        res.status(404).send('Task not found')
+        res.status(404).send('Note not found')
     }
     else {
         res.json(note)
@@ -56,10 +56,15 @@ router.put('/:id', noteValidationRules, (req: Request, res: Response) => {
         return res.status(400).json({ errors: validationErrors.array() })
     }
 
-    const updateTask = notebook.updateNote(parseInt(req.params.id), req.body)
+    const updateTask = notebook.updateNote(parseInt(req.params.id), {
+        id: parseInt(req.params.id),
+        title: req.body.title,
+        content: req.body.content,
+        dateEntry: new Date(),
+    })
 
     if (!updateTask) {
-        res.status(404).send('Task not found')
+        res.status(404).send('Note not found')
     }
     else {
         res.status(201).send()
@@ -71,7 +76,7 @@ router.delete('/:id', (req: Request, res: Response) => {
     const deleteTask = notebook.deleteNote(parseInt(req.params.id))
 
     if (!deleteTask) {
-        res.status(404).send('Task not found')
+        res.status(404).send('Note not found')
     } 
     else {
         res.status(204).send()
