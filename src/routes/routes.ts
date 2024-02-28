@@ -29,7 +29,7 @@ router.post('/', noteValidationRules, (req: Request, res: Response) => {
     }
 
     notebook.addNote(note)
-    res.status(201).json(note)
+    res.status(201).json('Note created successfully')
 })
 
 // read 
@@ -67,7 +67,7 @@ router.put('/:id', noteValidationRules, (req: Request, res: Response) => {
         res.status(404).send('Note not found')
     }
     else {
-        res.status(201).send()
+        res.status(201).send('Note updated successfully')
     }
 })
 
@@ -79,7 +79,7 @@ router.delete('/:id', (req: Request, res: Response) => {
         res.status(404).send('Note not found')
     } 
     else {
-        res.status(204).send()
+        res.status(204).send('Note deleted successfully')
     }
 })
 
