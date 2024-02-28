@@ -1,6 +1,11 @@
 import { Note } from "../models/note"
 
-let notes: Note[] = []
+let notes: Note[] = [{
+    id: 1,
+    title: 'Initial Note',
+    content: 'Initial note content',
+    dateEntry: new Date(),
+}]
 
 class Notebook {
     getNotes(): Note[] {
